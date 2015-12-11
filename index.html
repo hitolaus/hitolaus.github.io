@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>syscall.dk</title>
+		<meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+		<link rel="icon" href="images/favicon.jpg" type="image/jpeg" />
+
+        <link rel="stylesheet" href="css/font-awesome.min.css">
+		<style type="text/css">
+            body, html {
+                margin: 0; padding: 0;
+                width: 100%;
+                height: 100%;
+                font-family: "Century Gothic","Lucida Grande", "Lucida Sans Unicode", "Trebuchet MS", Helvetica, Arial, Verdana, sans-serif;
+                overflow: hidden;
+            }
+
+            a:link { color: black; text-decoration: none; }
+            a:visited { color: black; text-decoration: none; }
+            a:active  { color: black; text-decoration: none; }
+            a:hover   { color: black; text-decoration: none; }
+
+            .page {
+                width: 100%;
+                height: 100%;
+            }
+            .unsupported {
+                display: none;
+                width: 100%;
+                height: 100%;
+                background: black;
+                color: white;
+                font-weight: bold;
+                font-size: 2em;
+                text-align: center;
+                padding-top: 10%;
+            }
+            .image-pane {
+                width: 50%;
+                height: 100%;
+                background: url(images/image-high.jpg) no-repeat center center;
+                background-size: cover;
+                float: left;
+            }
+            .info-pane {
+                position: relative;
+                width: 50%;
+                height: 100%;
+                margin-left: 50%;
+                background-color: white;
+            }
+            .info-pane header {
+                position: absolute;
+                text-align: center;
+                width: 100%;
+                top: 40%;
+                left: 50%;
+                -webkit-transform: translate(-50%, -50%);
+                   -moz-transform: translate(-50%, -50%);
+                        transform: translate(-50%, -50%);
+            }
+            .info-pane header .logo {
+                height: 50px;
+                width: 50px;
+                margin: 0 auto;
+                border-radius: 50px;
+                border: 2px solid rgba(0,0,0,0.5);
+                background: url(images/profile.jpg) no-repeat center center;
+                background-size: cover;
+            }
+            .info-pane header .name {
+                font-size: 3em;
+            }
+            .info-pane header .title {
+                font-size: 1.5em;
+
+            }
+            .info-pane header .social:before, .info-pane header .social:after {
+                content: '···';
+                letter-spacing: 1em;
+            }
+            .info-pane header .social {
+                font-size: 1.5em;
+                letter-spacing: 0.5em;
+                margin-top: 1em;
+            }
+            .info-pane footer {
+                position: absolute;
+                bottom: 0;
+                width: 100%;
+                padding-bottom: 1em;
+            }
+            .info-pane footer .info {
+                width: 33%;
+                float: left;
+                text-align: center;
+            }
+            .info-pane footer .info .title {
+                color: #aaa;
+                font-size: 1em;
+            }
+            .info-pane footer .info .value {
+                color: #333;
+                font-size: 1.5em;
+            }
+            @media screen and (max-width: 1200px) {
+                .info-pane header .social:before, .info-pane header .social:after {
+                    content: '···';
+                    letter-spacing: 0.5em;
+                }
+            }
+            @media screen and (max-width: 1000px) {
+                .info-pane header .social:before, .info-pane header .social:after {
+                    content: '··';
+                    letter-spacing: 0.5em;
+                }
+            }
+            @media screen and (max-width: 900px) {
+                .info-pane header .social:before, .info-pane header .social:after {
+                    content: '···';
+                    letter-spacing: 1em;
+                }
+                .image-pane {
+                    width: 100%;
+                    height: 25%;
+                    float: none;
+                }
+                .info-pane {
+                    width: 100%;
+                    height: 75%;
+                    margin-left:0;
+                }
+            }
+            @media screen and (max-width: 600px) {
+                .image-pane {
+                    background: url(images/image-low.jpg) no-repeat center center;
+                }
+                .info-pane header .social:before, .info-pane header .social:after {
+                    content: '···';
+                    letter-spacing: 0.5em;
+                }
+            }
+            @media screen and (max-width: 500px) {
+                .info-pane header .social {
+                    font-size: 2em;
+                }
+                .info-pane header .social:before, .info-pane header .social:after {
+                    content: '';
+                }
+                body {
+                    font-size: 10pt;
+                }
+            }
+            @media screen and (max-width: 300px) {
+                body {
+                    font-size: 9pt;
+                }
+            }
+            @media screen and (max-height: 350px) {
+                .page {
+                    display: none;
+                }
+                .unsupported {
+                    display: block;
+                }
+            }
+		</style>
+        <script type="text/javascript">
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-28784484-1']);
+            _gaq.push(['_trackPageview']);
+            (function() {
+                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+            })();
+        </script>
+	</head>
+	<body>
+        <div class="page">
+            <div class="image-pane"></div>
+            <div class="info-pane">
+                <header>
+                    <div class="logo"></div>
+                    <div class="name">Jakob Hilarius</div>
+                    <div class="title">Software Developer</div>
+                    <div class="social">
+                        <a href="https://github.com/hitolaus/" title="Github"><span class="fa fa-lg fa-github"></span></a>
+                        <a href="http://twitter.com/hitolaus/" title="Twitter"><span class="fa fa-lg fa-twitter"></span></a>
+                        <a href="https://www.linkedin.com/pub/jakob-hilarius/1b/47a/b79" title="LinkedIn"><span class="fa fa-lg fa-linkedin"></span></a>
+                        <a href="http://stackoverflow.com/users/3107213/jakob-hilarius-nielsen" title="Stack Overflow"><span class="fa fa-lg fa-stack-overflow"></span></a>
+                    </div>
+                </header>
+                <footer>
+                    <div class="info">
+                        <div class="title">Since</div>
+                        <div class="value">1980</div>
+                    </div>
+                    <div class="info">
+                        <div class="title">Based in</div>
+                        <div class="value">Copenhagen</div>
+                    </div>
+                    <div class="info">
+                        <div class="title">Working at</div>
+                        <div class="value">Storebox</div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        <div class="unsupported">
+            Unsupported resolution
+        </div>
+	</body>
+</html>
