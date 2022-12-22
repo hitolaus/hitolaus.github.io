@@ -4,216 +4,277 @@
 		<title>syscall.dk</title>
 		<meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
 		<link rel="icon" href="images/favicon.jpg" type="image/jpeg" />
 
         <link rel="stylesheet" href="css/font-awesome.min.css">
 		<style type="text/css">
+            :root {
+                --bg-color-1: orange;
+                --bg-color-2: green;
+                --bg-color-3: blue;
+
+                --selected-color: red;
+            }
+            * {
+                box-sizing: border-box;
+            }
             body, html {
                 margin: 0; padding: 0;
                 width: 100%;
                 height: 100%;
                 font-family: "Century Gothic","Lucida Grande", "Lucida Sans Unicode", "Trebuchet MS", Helvetica, Arial, Verdana, sans-serif;
+                scroll-behavior: smooth;
+                scroll-snap-type: y mandatory;
+            }
+            body {
+                color: black;
+                background-color: var(--bg-color-1);
+            }
+
+            a { 
+                text-decoration: none; 
+                opacity: 0.5;
+            }
+            a:link { color: white;  }
+            a:visited { color: white; }
+            a:active  { color: white; }
+            a:hover   { 
+                color: var(--selected-color); 
+                opacity: 1;
+            }
+
+            .page {
+                position: relative;
+                width: 100%;
+                height: 100%;
+                scroll-snap-align: start;
+                padding: 5em;
                 overflow: hidden;
             }
 
-            a:link { color: black; text-decoration: none; }
-            a:visited { color: black; text-decoration: none; }
-            a:active  { color: black; text-decoration: none; }
-            a:hover   { color: black; text-decoration: none; }
-
-            .page {
-                width: 100%;
-                height: 100%;
+            #intro.page {
+                background-color: var(--bg-color-1);
             }
-            .unsupported {
-                display: none;
-                width: 100%;
+            #intro.page a {
+                opacity: 1;
+                color: black;
+            }
+            #intro.page a:hover {
+                color: var(--selected-color); 
+            }
+
+            #about.page {
+                background-color: var(--bg-color-2);
+            }
+
+            #social.page {
+                background-color: var(--bg-color-3);
+            }
+
+            #social.page .social {
+                display: flex;
                 height: 100%;
-                background: black;
+                justify-content: center;
+                align-items: center;
+                gap: 1em;
+                transition: gap 1s;
+            }
+            #social.page .social.is-visible {
+                gap: 2em;
+            }
+
+            .to-top {
+                position: absolute;
+                right: 1em;
+                top: 1em;
+            }
+            .one-down {
+                position: absolute;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                bottom: 1em;
+                animation-name: bounce;
+                animation-timing-function: ease;
+                animation-duration: 2s;
+                animation-iteration-count: infinite;
+            }
+
+
+            .bounded-anim-block {
+                display: inline-block;
+                overflow: hidden;
+            }
+            .bounded-anim-block > * {
+                animation-duration: 1s;
+                animation-iteration-count: 1;
+                animation-fill-mode: forwards;
+            }
+            .text {
+                font-size: 4em;
+                font-weight: bold;
+                transform: translateY(-100%);
+            }
+            .hello {
+                animation-name: slidedown;
+                color: white;
+            }
+            .intro {
+                animation-name: slidedown;
+                animation-delay: 500ms;
+            }
+            .name {
+                animation-name: slideup;
+                animation-delay: 1s;
+            }
+
+            #intro img {
+                position: absolute;
+                right: 0;
+                bottom: 0;
+                animation-name: zoomin;
+                animation-duration: 2500ms;
+                animation-iteration-count: 1;
+                animation-fill-mode: forwards;
+                opacity: 0.4;
+            }
+
+            .info .title {
                 color: white;
                 font-weight: bold;
-                font-size: 2em;
-                text-align: center;
-                padding-top: 10%;
-            }
-            .image-pane {
-                width: 50%;
-                height: 100%;
-                background: url(images/image-high.jpg) no-repeat center center;
-                background-size: cover;
-                float: left;
-            }
-            .info-pane {
-                position: relative;
-                width: 50%;
-                height: 100%;
-                margin-left: 50%;
-                background-color: white;
-            }
-            .info-pane header {
-                position: absolute;
-                text-align: center;
-                width: 100%;
-                top: 40%;
-                left: 50%;
-                -webkit-transform: translate(-50%, -50%);
-                   -moz-transform: translate(-50%, -50%);
-                        transform: translate(-50%, -50%);
-            }
-            .info-pane header .logo {
-                height: 50px;
-                width: 50px;
-                margin: 0 auto;
-                border-radius: 50px;
-                border: 2px solid rgba(0,0,0,0.5);
-                background: url(images/profile.jpg) no-repeat center center;
-                background-size: cover;
-            }
-            .info-pane header .name {
                 font-size: 3em;
             }
-            .info-pane header .title {
-                font-size: 1.5em;
+            .info .value {
+                color: white;
+                opacity: 0.3;
+                font-size: 2em;
+            }
+            .info.is-visible .value {
+                animation-name: slideup;
+            }
 
-            }
-            .info-pane header .social:before, .info-pane header .social:after {
-                content: '···';
-                letter-spacing: 1em;
-            }
-            .info-pane header .social {
-                font-size: 1.5em;
-                letter-spacing: 0.5em;
-                margin-top: 1em;
-            }
-            .info-pane footer {
-                position: absolute;
-                bottom: 0;
-                width: 100%;
-                padding-bottom: 1em;
-            }
-            .info-pane footer .info {
-                width: 33%;
-                float: left;
-                text-align: center;
-            }
-            .info-pane footer .info .title {
-                color: #aaa;
-                font-size: 1em;
-            }
-            .info-pane footer .info .value {
-                color: #333;
-                font-size: 1.5em;
-            }
-            @media screen and (max-width: 1200px) {
-                .info-pane header .social:before, .info-pane header .social:after {
-                    content: '···';
-                    letter-spacing: 0.5em;
+            @keyframes slideright {
+                from {
+                    transform: translateX(-100%);
+                }
+                to {
+                    transform: translateX(0%);
                 }
             }
-            @media screen and (max-width: 1000px) {
-                .info-pane header .social:before, .info-pane header .social:after {
-                    content: '··';
-                    letter-spacing: 0.5em;
+            @keyframes slideleft {
+                from {
+                    transform: translateX(100%);
+                }
+                to {
+                    transform: translateX(0%);
                 }
             }
-            @media screen and (max-width: 900px) {
-                .info-pane header .social:before, .info-pane header .social:after {
-                    content: '···';
-                    letter-spacing: 1em;
+            @keyframes slideup {
+                from {
+                    transform: translateY(100%);
                 }
-                .image-pane {
-                    width: 100%;
-                    height: 25%;
-                    float: none;
-                }
-                .info-pane {
-                    width: 100%;
-                    height: 75%;
-                    margin-left:0;
+                to {
+                    transform: translateY(0%);
                 }
             }
-            @media screen and (max-width: 600px) {
-                .image-pane {
-                    background: url(images/image-low.jpg) no-repeat center center;
+            @keyframes slidedown {
+                from {
+                    transform: translateY(-100%);
                 }
-                .info-pane header .social:before, .info-pane header .social:after {
-                    content: '···';
-                    letter-spacing: 0.5em;
-                }
-            }
-            @media screen and (max-width: 500px) {
-                .info-pane header .social {
-                    font-size: 2em;
-                }
-                .info-pane header .social:before, .info-pane header .social:after {
-                    content: '';
-                }
-                .info-pane footer .info .value {
-                	font-size: 1.2em;
-            	}
-                body {
-                    font-size: 10pt;
+                to {
+                    transform: translateY(0%);
                 }
             }
-            @media screen and (max-width: 300px) {
-                body {
-                    font-size: 9pt;
+            @keyframes zoomin {
+                from {
+                    transform: scale(1.1);
+                }
+                to {
+                    transform: scale(1.0);
                 }
             }
-            @media screen and (max-height: 350px) {
-                .page {
-                    display: none;
+            @keyframes bounce {
+                0% {
+                    transform: translateY(0);
                 }
-                .unsupported {
-                    display: block;
+                50% {
+                    transform: translateY(10px);
+                }
+                100% {
+                    transform: translateY(0);
                 }
             }
 		</style>
-        <script type="text/javascript">
-            var _gaq = _gaq || [];
-            _gaq.push(['_setAccount', 'UA-28784484-1']);
-            _gaq.push(['_trackPageview']);
-            (function() {
-                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-            })();
-        </script>
 	</head>
 	<body>
-        <div class="page">
-            <div class="image-pane"></div>
-            <div class="info-pane">
-                <header>
-                    <div class="logo"></div>
-                    <div class="name">Jakob Hilarius</div>
-                    <div class="title">Software Developer</div>
-                    <div class="social">
-                        <a href="https://github.com/hitolaus/" title="Github"><span class="fa fa-lg fa-github"></span></a>
-                        <a href="http://twitter.com/hitolaus/" title="Twitter"><span class="fa fa-lg fa-twitter"></span></a>
-                        <a href="https://www.linkedin.com/pub/jakob-hilarius/1b/47a/b79" title="LinkedIn"><span class="fa fa-lg fa-linkedin"></span></a>
-                        <a href="http://stackoverflow.com/users/3107213/jakob-hilarius-nielsen" title="Stack Overflow"><span class="fa fa-lg fa-stack-overflow"></span></a>
-                    </div>
-                </header>
-                <footer>
-                    <div class="info">
-                        <div class="title">Since</div>
-                        <div class="value">1980</div>
-                    </div>
-                    <div class="info">
-                        <div class="title">Based in</div>
-                        <div class="value">Copenhagen</div>
-                    </div>
-                    <div class="info">
-                        <div class="title">Working at</div>
-                        <div class="value">Storebox</div>
-                    </div>
-                </footer>
+        <div class="page" id="intro">
+            <img src="images/head.png" alt="" />
+            <div class="row">
+                <div class="bounded-anim-block">
+                    <div class="text hello">Hello,</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="bounded-anim-block">
+                    <div class="text intro"><a href="#about">My name is</a></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="bounded-anim-block">
+                    <div class="text name"><a href="#social">Jakob Hilarius</a></div>
+                </div>
             </div>
         </div>
-        <div class="unsupported">
-            Unsupported resolution
+        <div class="page" id="about">
+            <div class="to-top">
+                <a href="#intro">syscall.dk</a>
+            </div>
+        
+            <div class="info in-viewport">
+                <div class="title">Since</div>
+                <div class="bounded-anim-block">
+                    <div class="value">1980</div>
+                </div>
+            </div>
+            <div class="info in-viewport">
+                <div class="title">Based in</div>
+                <div class="bounded-anim-block">
+                    <div class="value">Copenhagen, Denmark</div>
+                </div>
+            </div>
+            <div class="info in-viewport">
+                <div class="title">Working at</div>
+                <div class="bounded-anim-block">
+                    <div class="value">Softpay</div>
+                </div>
+            </div>
+        
+            <div class="one-down">
+                <a href="#social"><i class="fa fa-2x fa-angle-double-down"></i></a>
+            </div>
         </div>
+        <div class="page" id="social">
+            <div class="to-top">
+                <a href="#intro">syscall.dk</a>
+            </div>
+            <div class="social in-viewport">
+                <a href="https://www.instagram.com/hitolaus/" title="Instagram"><span class="fa fa-4x fa-instagram"></span></a>
+                <a href="https://github.com/hitolaus/" title="Github"><span class="fa fa-4x fa-github"></span></a>
+                <a href="https://www.linkedin.com/pub/jakob-hilarius/1b/47a/b79" title="LinkedIn"><span class="fa fa-4x fa-linkedin"></span></a>
+            </div>
+        </div>
+
+        <script>
+            const inViewport = (entries, observer) => {
+                entries.forEach(entry => {
+                    entry.target.classList.toggle("is-visible", entry.isIntersecting);
+                });
+            };
+
+            const o = new IntersectionObserver(inViewport);
+
+            document.querySelectorAll('.in-viewport').forEach(EL => {
+                o.observe(EL, {});
+            });
+        </script>
 	</body>
 </html>
