@@ -4,16 +4,23 @@
 		<title>syscall.dk</title>
 		<meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="icon" href="images/favicon.jpg" type="image/jpeg" />
+		<link rel="icon" href="favicon.ico" type="image/x-icon" />
+        <link rel="manifest" href="manifest.json" />
 
         <link rel="stylesheet" href="css/font-awesome.min.css">
 		<style type="text/css">
             :root {
-                --bg-color-1: orange;
-                --bg-color-2: green;
-                --bg-color-3: blue;
+                --primary-color: #f0abfc;
+                --secondary-color: #fd9b61;
 
-                --selected-color: red;
+                --fg-color-1: black;
+                --bg-color-1: #FEF7EE;
+                --fg-color-2: black;
+                --bg-color-2: #FEF7EE;
+                --fg-color-3: black;
+                --bg-color-3: #FEF7EE;
+
+                --selected-color: #fd9b61;
             }
             * {
                 box-sizing: border-box;
@@ -22,7 +29,7 @@
                 margin: 0; padding: 0;
                 width: 100%;
                 height: 100%;
-                font-family: "Century Gothic","Lucida Grande", "Lucida Sans Unicode", "Trebuchet MS", Helvetica, Arial, Verdana, sans-serif;
+                font-family: ui-sans-serif,system-ui,sans-serif;
                 scroll-behavior: smooth;
                 scroll-snap-type: y mandatory;
             }
@@ -32,15 +39,22 @@
             }
 
             a { 
+                border-bottom: 3px solid transparent;
                 text-decoration: none; 
                 opacity: 0.5;
+                transition: border 500ms;
             }
-            a:link { color: white;  }
-            a:visited { color: white; }
-            a:active  { color: white; }
+            a:link { color: var(--fg-color-1);  }
+            a:visited { color: var(--fg-color-1); }
+            a:active  { color: var(--fg-color-1); }
             a:hover   { 
-                color: var(--selected-color); 
+                border-bottom: 3px solid var(--secondary-color);
                 opacity: 1;
+            }
+
+            mark {
+                background: transparent;
+                box-shadow: 0 0 #0000, 0 0 #0000, inset 0 -.5em 0 0 #f0abfc;
             }
 
             .page {
@@ -58,9 +72,6 @@
             #intro.page a {
                 opacity: 1;
                 color: black;
-            }
-            #intro.page a:hover {
-                color: var(--selected-color); 
             }
 
             #about.page {
@@ -87,6 +98,7 @@
                 position: absolute;
                 right: 1em;
                 top: 1em;
+                font-weight: bold;
             }
             .one-down {
                 position: absolute;
@@ -103,6 +115,7 @@
             .bounded-anim-block {
                 display: inline-block;
                 overflow: hidden;
+                padding: 6px;
             }
             .bounded-anim-block > * {
                 animation-duration: 1s;
@@ -116,7 +129,6 @@
             }
             .hello {
                 animation-name: slidedown;
-                color: white;
             }
             .intro {
                 animation-name: slidedown;
@@ -139,12 +151,12 @@
             }
 
             .info .title {
-                color: white;
+                color: black;
                 font-weight: bold;
                 font-size: 3em;
             }
             .info .value {
-                color: white;
+                color: black;
                 opacity: 0.3;
                 font-size: 2em;
             }
@@ -210,7 +222,7 @@
             <img src="images/head.png" alt="" />
             <div class="row">
                 <div class="bounded-anim-block">
-                    <div class="text hello">Hello,</div>
+                    <mark class="text hello">Hello,</mark>
                 </div>
             </div>
             <div class="row">
@@ -244,7 +256,7 @@
             <div class="info in-viewport">
                 <div class="title">Working at</div>
                 <div class="bounded-anim-block">
-                    <div class="value">Softpay</div>
+                    <div class="value">Grazper</div>
                 </div>
             </div>
         
